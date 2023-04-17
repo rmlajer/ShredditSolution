@@ -123,5 +123,3 @@ app.Run();
 
 record NewCommentData (string Text, User User, int PostId);
 record NewPostData(string Text, User User, string Title);
-
-record ScoreData(bool b);

@@ -50,10 +50,14 @@ else
     private async void Upvote(int id)
     {
         var updatedPost = await apiService.UpvotePost(id);
+        posts = await apiService.GetPosts();
+        StateHasChanged();
+
     }
 
     private async void Downvote(int id)
     {
-        Console.WriteLine("Not implemented 😪");
+        string s = "Downvoted";
+        var updatedPost = await apiService.DownvotePost(id);
     }
 }

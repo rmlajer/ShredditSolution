@@ -51,12 +51,12 @@ namespace shreddit.Service
 
         public Post GetPost(int id)
         {
-            return db.Posts.Include(p => p.Comments).Include(p => p.User).First(p => p.PostId == id);
+            return db.Posts.Include(p => p.User).Include(p => p.Comments).ThenInclude(c => c.User).First(p => p.PostId == id);
         }
 
         public List<Comment> GetComments()
         {
-            return db.Comments.ToList();
+            return db.Comments.Include(c => c.User).ToList();
         }
 
         public string CreateComment(string text, User user, int postId)

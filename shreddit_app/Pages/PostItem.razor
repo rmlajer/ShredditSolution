@@ -43,7 +43,7 @@ else
         @foreach (var comment in Post.Comments)
         {
             <tr>
-                <td><!--@comment.User.Name--></td>
+                <td>@comment.User.Name</td>
                 <td>@comment.Text</td>
                 <td>@(comment.Upvotes - comment.Downvotes)</td>
                 <td><button @onclick="() => Upvote(comment.CommentId)">Upvote</button></td>
@@ -70,11 +70,12 @@ else
     }
     private async void Upvote(int id)
     {
-        Console.WriteLine("Not implemented 😪");
+        var updatedPost = await apiService.UpvoteComment(id);
+
     }
 
     private async void Downvote(int id)
     {
-        Console.WriteLine("Not implemented 😪");
+        var updatedPost = await apiService.DownvoteComment(id);
     }
 }
