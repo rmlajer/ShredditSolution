@@ -52,7 +52,7 @@ public class ApiService
 
     public async Task<Post> UpvotePost(int id)
     {
-        string url = $"{baseAPI}posts/{id}/upvote/";
+        string url = $"{baseAPI}posts/{id}";
 
         // Post JSON to API, save the HttpResponseMessage
         HttpResponseMessage msg = await http.PutAsJsonAsync(url, "");

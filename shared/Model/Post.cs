@@ -5,7 +5,8 @@ namespace shared.Model
 {
     public class Post
     {
-        public Post(string title = "", string text = "", User user = null)
+  
+        public Post(User user, string title = "", string text = "")
         {
             this.Title = title;
             this.Text = text;
@@ -16,7 +17,14 @@ namespace shared.Model
 
 
         }
-        public Post() { }
+        public Post() {
+
+            Title = "";
+            Text = "";
+            User = null;
+            Downvotes = 0;
+            Upvotes = 0;
+        }
 
         public int PostId { get; set; }
         public string Title { get; set; }
@@ -27,7 +35,7 @@ namespace shared.Model
         public int Downvotes { get; set; }
         public DateTime Time { get; set; }
         public List<Comment> Comments { get; set; }
-
+        
         public void UpdateVote(bool b)
         {
             if (b)
@@ -39,6 +47,7 @@ namespace shared.Model
                 Downvotes++;
             }
         }
+        
     }
 
 }

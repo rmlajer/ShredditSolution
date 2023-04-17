@@ -43,11 +43,11 @@ else
         @foreach (var comment in Post.Comments)
         {
             <tr>
-                <td>@comment.User.Name</td>
+                <td><!--@comment.User.Name--></td>
                 <td>@comment.Text</td>
                 <td>@(comment.Upvotes - comment.Downvotes)</td>
                 <td><button @onclick="() => Upvote(comment.CommentId)">Upvote</button></td>
-                    <td><button @onclick="() => Downvote(comment.CommentId)">Downvote</button></td>
+                <td><button @onclick="() => Downvote(comment.CommentId)">Downvote</button></td>
             </tr>
         }
     </table>
