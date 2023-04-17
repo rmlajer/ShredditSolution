@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-@using kreddit_app.Data;
+@using shreddit_app.Data;
 @using shared.Model;
 @inject ApiService apiService
 
@@ -50,10 +50,15 @@ else
     private async void Upvote(int id)
     {
         var updatedPost = await apiService.UpvotePost(id);
+        posts = await apiService.GetPosts();
+        StateHasChanged();
+
     }
 
     private async void Downvote(int id)
     {
-        Console.WriteLine("Not implemented 😪");
+        var updatedPost = await apiService.DownvotePost(id);
+        posts = await apiService.GetPosts();
+        StateHasChanged();
     }
 }

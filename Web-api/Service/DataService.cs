@@ -34,8 +34,8 @@ namespace shreddit.Service
                 db.Posts.Add(new Post { Title = "TestPost2", Text = "Please", User = testUser2 });
                 db.SaveChanges();
 
-                db.Comments.Add(new Comment { Text = "TestPostComment1", User = testUser1, PostId = 1 });
-                db.Comments.Add(new Comment { Text = "TestPostComment2", User = testUser2, PostId = 1 });
+                db.Comments.Add(new Comment { Text = "TestPostComment1", UserId = 1, PostId = 1 });
+                db.Comments.Add(new Comment { Text = "TestPostComment2", UserId = 2, PostId = 1 });
                 
 
             }
@@ -46,22 +46,39 @@ namespace shreddit.Service
         
         public List<Post> GetPosts()
         {
-            return db.Posts.ToList();
+            return db.Posts.Include(p => p.User).ToList();
         }
 
         public Post GetPost(int id)
         {
-            return db.Posts.Include(p => p.Comments).First(p => p.PostId == id);
+            return db.Posts.Include(p => p.User).Include(p => p.Comments).First(p => p.PostId == id);
+        }
+
+        public User GetUser(int id)
+        {
+            return db.Users.First(u => u.UserId == id);
+        }
+
+        public string CreateUser(int userId, string name)
+        {
+            db.Users.Add(new User { UserId = userId, Name = name});
+            db.SaveChanges();
+            return "User added";
         }
 
         public List<Comment> GetComments()
         {
-            return db.Comments.ToList();
+            return db.Comments.Include(c => c.UserId).ToList();
         }
 
-        public string CreateComment(string text, User user, int postId)
+        public Comment GetComment(int id)
         {
-            db.Comments.Add(new Comment { Text = text, User = user, PostId = postId });
+            return db.Comments.First(c => c.CommentId == id);
+        }
+
+        public string CreateComment(string text, int userId, int postId)
+        {
+            db.Comments.Add(new Comment { Text = text, UserId = userId, PostId = postId });
             db.SaveChanges();
             return "Comment added";
         }
@@ -73,22 +90,32 @@ namespace shreddit.Service
             return "Post added";
         }
 
-        public string VotePost(bool b, int id)
+        public string UpvotePost(int id)
         {
-            db.Posts.First(p => p.PostId == id).UpdateVote(b);
+            db.Posts.First(p => p.PostId == id).UpvotePost();
             db.SaveChanges();
-            if (b) { return "Post upvoted"; }
-            else if (!b) { return "Post downvoted"; }
-            else return "No work";
+            return "Post upvoted";
         }
 
-        public string VoteComment(bool b, int id)
+        public string DownvotePost(int id)
         {
-            db.Comments.First(p => p.CommentId == id).UpdateVote(b);
+            db.Posts.First(p => p.PostId == id).DownvotePost();
             db.SaveChanges();
-            if (b) { return "Comment upvoted"; }
-            else if (!b) { return "Comment downvoted"; }
-            else return "No work";
+            return "Post downvoted";
+        }
+
+        public string UpvoteComment(int id)
+        {
+            db.Comments.First(p => p.CommentId == id).UpvoteComment();
+            db.SaveChanges();
+            return "Comment upvoted";
+        }
+
+        public string DownvoteComment(int id)
+        {
+            db.Comments.First(p => p.CommentId == id).DownvoteComment();
+            db.SaveChanges();
+            return "Comment downvoted";
         }
 
     }

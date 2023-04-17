@@ -6,6 +6,7 @@ using shreddit.Service;
 using shared.Model;
 using System.Data.Common;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Sætter CORS så API'en kan bruges fra andre domæner
@@ -75,14 +76,31 @@ app.MapGet("/api/posts/{id}", (DataService service, int id) =>
     return service.GetPost(id);
 });
 
+app.MapGet("/api/users/{id}", (DataService service, int id) =>
+{
+    return service.GetUser(id);
+});
+
 app.MapGet("/api/comments", (DataService service) =>
 {
     return service.GetComments();
 });
 
+app.MapGet("/api/comments/{id}", (DataService service, int id) =>
+{
+    return service.GetComment(id);
+});
+
+app.MapPost("/api/users", (DataService service, NewUserData data) =>
+{
+    string result = service.CreateUser(data.UserId, data.Name );
+
+    return result;
+});
+
 app.MapPost("/api/comments", (DataService service, NewCommentData data) =>
 {
-    return service.CreateComment(data.Text, data.User,  data.PostId);
+    return service.CreateComment(data.Text, data.UserId,  data.PostId);
 });
 
 app.MapPost("/api/posts", (DataService service, NewPostData data) =>
@@ -92,22 +110,35 @@ app.MapPost("/api/posts", (DataService service, NewPostData data) =>
     return result;
 });
 
-app.MapPut("/api/posts/{id}", (DataService service, ScoreData data, int id) =>
+app.MapPut("/api/posts/{id}/upvote", (DataService service, int id) =>
 {
-    string result = service.VotePost(data.b, id);
+    string result = service.UpvotePost(id);
     return result;
 });
 
-app.MapPut("/api/comments/{id}", (DataService service, ScoreData data, int id) =>
+app.MapPut("/api/posts/{id}/downvote", (DataService service, int id) =>
 {
-    string result = service.VoteComment(data.b, id);
+    string result = service.DownvotePost(id);
     return result;
 });
+
+app.MapPut("/api/comments/{id}/upvote", (DataService service, int id) =>
+{
+    string result = service.UpvoteComment(id);
+    return result;
+});
+
+app.MapPut("/api/comments/{id}/downvote", (DataService service, int id) =>
+{
+    string result = service.DownvoteComment(id);
+    return result;
+});
+
 
 
 app.Run();
 
-record NewCommentData (string Text, User User, int PostId);
+record NewCommentData (string Text, int UserId, int PostId);
 record NewPostData(string Text, User User, string Title);
 
-record ScoreData(bool b);
+record NewUserData(int UserId, string Name);
