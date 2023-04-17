@@ -86,6 +86,11 @@ app.MapGet("/api/comments", (DataService service) =>
     return service.GetComments();
 });
 
+app.MapGet("/api/comments/{id}", (DataService service, int id) =>
+{
+    return service.GetComment(id);
+});
+
 app.MapPost("/api/users", (DataService service, NewUserData data) =>
 {
     string result = service.CreateUser(data.UserId, data.Name );

@@ -71,6 +71,11 @@ namespace shreddit.Service
             return db.Comments.Include(c => c.UserId).ToList();
         }
 
+        public Comment GetComment(int id)
+        {
+            return db.Comments.First(c => c.CommentId == id);
+        }
+
         public string CreateComment(string text, int userId, int postId)
         {
             db.Comments.Add(new Comment { Text = text, UserId = userId, PostId = postId });

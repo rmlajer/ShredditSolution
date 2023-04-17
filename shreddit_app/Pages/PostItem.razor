@@ -70,12 +70,18 @@ else
     }
     private async void Upvote(int id)
     {
+        Console.WriteLine("PostId: " + PostId + ". Id: " + id);
         var updatedPost = await apiService.UpvoteComment(id);
+        
+        Post = await apiService.GetPost(PostId);
+        StateHasChanged();
 
     }
 
     private async void Downvote(int id)
     {
         var updatedPost = await apiService.DownvoteComment(id);
+        Post = await apiService.GetPost(PostId);
+        StateHasChanged();
     }
 }

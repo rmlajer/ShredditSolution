@@ -57,7 +57,8 @@ else
 
     private async void Downvote(int id)
     {
-        string s = "Downvoted";
         var updatedPost = await apiService.DownvotePost(id);
+        posts = await apiService.GetPosts();
+        StateHasChanged();
     }
 }
