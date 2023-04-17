@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 
 using shared.Model;
 
-namespace kreddit_app.Data;
+namespace shreddit_app.Data;
 
 public class ApiService
 {

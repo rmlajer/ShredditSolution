@@ -4,7 +4,7 @@ See how the links are made in 'PostList.razor'.
 -->
 @page "/post/{id}"
 
-@using kreddit_app.Data;
+@using shreddit_app.Data;
 @using shared.Model;
 @inject ApiService apiService
 
@@ -47,7 +47,7 @@ else
                 <td>@comment.Text</td>
                 <td>@(comment.Upvotes - comment.Downvotes)</td>
                 <td><button @onclick="() => Upvote(comment.CommentId)">Upvote</button></td>
-                <td><button @onclick="() => Downvote(comment.CommentId)">Downvote</button></td>
+                    <td><button @onclick="() => Downvote(comment.CommentId)">Downvote</button></td>
             </tr>
         }
     </table>

@@ -7,8 +7,6 @@ using shared.Model;
 using System.Data.Common;
 
 
-//Test branch
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Sætter CORS så API'en kan bruges fra andre domæner
