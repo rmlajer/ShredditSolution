@@ -31,9 +31,35 @@ public class ApiService
         return await http.GetFromJsonAsync<Post>(url);
     }
 
-    public async Task<Comment> CreateComment(string text, int postId, int userId)
+    public async Task<User> GetUser(int id)
     {
-        string url = $"{baseAPI}/comments";
+        string url = $"{baseAPI}users/{id}/";
+        return await http.GetFromJsonAsync<User>(url);
+    }
+
+    public async Task<User> CreateUser(int userId, string name )
+    {
+        string url = $"{baseAPI}users";
+
+        // Post JSON to API, save the HttpResponseMessage
+        HttpResponseMessage msg = await http.PostAsJsonAsync(url, new { userId, name });
+
+        // Get the JSON string from the response
+        string json = msg.Content.ReadAsStringAsync().Result;
+
+        // Deserialize the JSON string to a Comment object
+        User? newUser = JsonSerializer.Deserialize<User>(json, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true // Ignore case when matching JSON properties to C# properties 
+        });
+
+        // Return the new user 
+        return newUser;
+    }
+
+    public async Task<Comment> CreateComment(string text, int userId, int postId)
+    {
+        string url = $"{baseAPI}comments";
      
         // Post JSON to API, save the HttpResponseMessage
         HttpResponseMessage msg = await http.PostAsJsonAsync(url, new { text, userId, postId });

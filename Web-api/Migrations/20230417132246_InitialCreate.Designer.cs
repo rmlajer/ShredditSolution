@@ -11,7 +11,7 @@ using shreddit.Data;
 namespace shreddit.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230329092539_InitialCreate")]
+    [Migration("20230417132246_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -48,8 +48,6 @@ namespace shreddit.Migrations
                     b.HasKey("CommentId");
 
                     b.HasIndex("PostId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Comments");
                 });
@@ -109,14 +107,6 @@ namespace shreddit.Migrations
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("shared.Model.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("shared.Model.Post", b =>

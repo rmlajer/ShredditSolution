@@ -1,10 +1,12 @@
 @using shreddit_app.Data;
 @inject ApiService apiService
+@using shared.Model
 
 <div>
     <br/>
     <h3>Write a comment</h3>
     <input placeholder="Text" type="input" id="text" @bind-value="text"/>
+    <input placeholder="UserId" type="input" id="userId" @bind-value="userId" />
     <button id="createPostButton" type="button" @onclick="CreateNewComment">Post comment</button>
 </div>
 
@@ -13,6 +15,8 @@
     // PostId is passed in from the parent component. See how in PostItem.razor.
     [Parameter]
     public int PostId { get; set; }
+    public int userId { get; set;  }
+    User tmpUser;
     private string? text;
     private async void CreateNewComment()
     {
@@ -20,8 +24,24 @@
         {
             return;
         }
+        try
+        {
+            tmpUser = await apiService.GetUser(userId);
+            Console.WriteLine("DB success: " + tmpUser.Name + ", " + tmpUser.UserId);
+        }
+        catch
+        {
+            tmpUser = await apiService.CreateUser(userId, "DummyName");
+            Console.WriteLine("DB failure: " + tmpUser.Name + ", " + tmpUser.UserId);
+        }
+        
+        if (tmpUser == null)
+        {
+
+        }
         // TODO: Provide list of users from dropdown, or maybe just convert
         // from username to UserId
-        await apiService.CreateComment(text, PostId, 2); // UserId: 2
+
+        await apiService.CreateComment(text, tmpUser.UserId, PostId); // UserId: 2
     }
 }

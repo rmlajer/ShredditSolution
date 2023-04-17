@@ -34,8 +34,8 @@ namespace shreddit.Service
                 db.Posts.Add(new Post { Title = "TestPost2", Text = "Please", User = testUser2 });
                 db.SaveChanges();
 
-                db.Comments.Add(new Comment { Text = "TestPostComment1", User = testUser1, PostId = 1 });
-                db.Comments.Add(new Comment { Text = "TestPostComment2", User = testUser2, PostId = 1 });
+                db.Comments.Add(new Comment { Text = "TestPostComment1", UserId = 1, PostId = 1 });
+                db.Comments.Add(new Comment { Text = "TestPostComment2", UserId = 2, PostId = 1 });
                 
 
             }
@@ -51,17 +51,29 @@ namespace shreddit.Service
 
         public Post GetPost(int id)
         {
-            return db.Posts.Include(p => p.User).Include(p => p.Comments).ThenInclude(c => c.User).First(p => p.PostId == id);
+            return db.Posts.Include(p => p.User).Include(p => p.Comments).First(p => p.PostId == id);
+        }
+
+        public User GetUser(int id)
+        {
+            return db.Users.First(u => u.UserId == id);
+        }
+
+        public string CreateUser(int userId, string name)
+        {
+            db.Users.Add(new User { UserId = userId, Name = name});
+            db.SaveChanges();
+            return "User added";
         }
 
         public List<Comment> GetComments()
         {
-            return db.Comments.Include(c => c.User).ToList();
+            return db.Comments.Include(c => c.UserId).ToList();
         }
 
-        public string CreateComment(string text, User user, int postId)
+        public string CreateComment(string text, int userId, int postId)
         {
-            db.Comments.Add(new Comment { Text = text, User = user, PostId = postId });
+            db.Comments.Add(new Comment { Text = text, UserId = userId, PostId = postId });
             db.SaveChanges();
             return "Comment added";
         }
