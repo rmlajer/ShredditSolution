@@ -93,17 +93,30 @@ app.MapPost("/api/posts", (DataService service, NewPostData data) =>
     return result;
 });
 
-app.MapPut("/api/posts/{id}", (DataService service, ScoreData data, int id) =>
+app.MapPut("/api/posts/{id}/upvote", (DataService service, int id) =>
 {
-    string result = service.VotePost(data.b, id);
+    string result = service.UpvotePost(id);
     return result;
 });
 
-app.MapPut("/api/comments/{id}", (DataService service, ScoreData data, int id) =>
+app.MapPut("/api/posts/{id}/downvote", (DataService service, int id) =>
 {
-    string result = service.VoteComment(data.b, id);
+    string result = service.DownvotePost(id);
     return result;
 });
+
+app.MapPut("/api/comments/{id}/upvote", (DataService service, int id) =>
+{
+    string result = service.UpvoteComment(id);
+    return result;
+});
+
+app.MapPut("/api/comments/{id}/downvote", (DataService service, int id) =>
+{
+    string result = service.DownvoteComment(id);
+    return result;
+});
+
 
 
 app.Run();

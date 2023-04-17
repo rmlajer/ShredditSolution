@@ -23,16 +23,13 @@
         public int Downvotes { get; set; }
         public DateTime Time { get; set; }
 
-        public void UpdateVote(bool b)
+        public void UpvoteComment()
         {
-            if (b)
-            {
-                Upvotes++;
-            }
-            else if (!b)
-            {
-                Downvotes++;
-            }
+            Upvotes++;
+        }
+        public void DownvoteComment()
+        {
+            Downvotes++;
         }
 
     }

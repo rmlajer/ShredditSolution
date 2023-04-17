@@ -36,18 +36,15 @@ namespace shared.Model
         public DateTime Time { get; set; }
         public List<Comment> Comments { get; set; }
         
-        public void UpdateVote(bool b)
-        {
-            if (b)
-            {
-                Upvotes++;
-            }
-            else if (!b)
-            {
-                Downvotes++;
-            }
+        public void UpvotePost()
+        {  
+            Upvotes++;  
         }
-        
+        public void DownvotePost()
+        {
+            Downvotes++;
+        }
+
     }
 
 }
